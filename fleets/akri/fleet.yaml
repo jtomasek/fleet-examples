@@ -10,13 +10,10 @@ helm:
   # The directory of the chart in the repo.  Also any valid go-getter supported
   # URL can be used there is specify where to download the chart from.
   # If repo below is set this value if the chart name in the repo
-  chart: "akri"
-
-  # An https to a valid Helm repository to download the chart from
-  repo: "https://suse-edge.github.io/charts"
+  chart: oci://registry.suse.com/edge/akri-chart
 
   # Used if repo is set to look up the version of the chart
-  version: "0.10.4"
+  version: "0.12.20"
 
   # Force recreate resource that can not be updated
   force: false
@@ -28,6 +25,8 @@ helm:
   # Custom values that will be passed as values.yaml to the installation
   # See https://github.com/suse-edge/charts/blob/main/charts/akri/0.10.4/questions.yml for more information on the values
   values:
+    agent:
+      allowDebugEcho: true
     kubernetesDistro: "k3s" # Use 'k3s' for rke2/k3s https://docs.akri.sh/user-guide/cluster-setup#configure-crictl
     # enable discovery handlers
     onvif:
@@ -42,4 +41,12 @@ helm:
     debugEcho:
       discovery:
         enabled: true
+      configuration:
+        enabled: true
+        shared: false
+        brokerPod:
+          image:
+            repository: nginx
+            # tag: stable-alpine
+            tag: latest
 
